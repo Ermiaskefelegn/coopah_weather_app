@@ -4,7 +4,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 
-// Your app's classes
 import 'package:coopah_weather_app/data/repositories/weather_repository_impl.dart';
 import 'package:coopah_weather_app/domain/usecases/get_weather.dart';
 import 'package:coopah_weather_app/presentation/bloc/weather_bloc.dart';
@@ -12,7 +11,8 @@ import 'package:coopah_weather_app/presentation/bloc/weather_bloc.dart';
 final GetIt getIt = GetIt.instance;
 
 Future<void> setupInjector() async {
-  await dotenv.load(fileName: ".env"); // Load environment variables
+  //env
+  await dotenv.load(fileName: ".env");
 
   // Dio
   getIt.registerLazySingleton(() => Dio(BaseOptions(

@@ -1,5 +1,3 @@
-// test/domain/usecase/get_weather_test.dart
-
 import 'package:coopah_weather_app/data/repositories/weather_repository_impl.dart';
 import 'package:coopah_weather_app/domain/entities/weather.dart';
 import 'package:coopah_weather_app/domain/usecases/get_weather.dart';

@@ -1,5 +1,3 @@
-// lib/presentation/bloc/weather_bloc.dart
-
 import 'package:coopah_weather_app/core/network_exception_hundler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'weather_event.dart';

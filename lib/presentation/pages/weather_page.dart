@@ -1,6 +1,3 @@
-// lib/presentation/pages/weather_page.dart
-
-import 'package:coopah_weather_app/data/repositories/weather_repository_impl.dart';
 import 'package:coopah_weather_app/domain/repositories/weather_repository.dart';
 import 'package:coopah_weather_app/domain/usecases/get_weather.dart';
 import 'package:coopah_weather_app/presentation/widgets/custome_normal_button.dart';
