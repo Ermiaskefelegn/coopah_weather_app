@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../models/weather_model.dart';
 
 class WeatherRemoteDataSource {
@@ -12,7 +13,7 @@ class WeatherRemoteDataSource {
       queryParameters: {
         'lat': lat,
         'lon': lon,
-        'appid': 'd39d56c77e53ff78e679b0861e2b1daa',
+        'appid': dotenv.env['WEATHER_API_KEY'],
       },
     );
     return WeatherModel.fromJson(response.data);

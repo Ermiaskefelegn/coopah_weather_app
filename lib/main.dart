@@ -4,12 +4,14 @@ import 'package:coopah_weather_app/data/repositories/weather_repository_impl.dar
 import 'package:coopah_weather_app/presentation/pages/weather_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env"); // Load environment variables
+
   final dio = Dio();
   final remoteDataSource = WeatherRemoteDataSource(dio: dio);
   final repository = WeatherRepositoryImpl(remoteDataSource: remoteDataSource);
-  // final getWeather = GetWeather(repository);
   runApp(MyApp(repository: repository));
 }
 
