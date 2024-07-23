@@ -1,20 +1,20 @@
 // lib/presentation/pages/weather_page.dart
 
 import 'package:coopah_weather_app/data/repositories/weather_repository_impl.dart';
+import 'package:coopah_weather_app/domain/repositories/weather_repository.dart';
 import 'package:coopah_weather_app/domain/usecases/get_weather.dart';
 import 'package:coopah_weather_app/presentation/widgets/custome_normal_button.dart';
 import 'package:coopah_weather_app/presentation/widgets/lable_text.dart';
-import 'package:coopah_weather_app/utils/app_assets.dart';
+import 'package:coopah_weather_app/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import '../bloc/weather_bloc.dart';
 import '../bloc/weather_event.dart';
 import '../bloc/weather_state.dart';
 
 class WeatherPage extends StatefulWidget {
-  const WeatherPage({super.key, required this.repository});
-
-  final WeatherRepositoryImpl repository;
+  const WeatherPage({super.key});
 
   @override
   State<WeatherPage> createState() => _WeatherPageState();
@@ -43,10 +43,12 @@ class _WeatherPageState extends State<WeatherPage> {
     return Scaffold(
       body: SafeArea(
         child: BlocProvider(
-          create: (context) =>
-              WeatherBloc(getWeather: GetWeather(widget.repository))
-                ..add(FetchWeather(
-                    lat: 51.51494225418024, lon: -0.12363193061883422)),
+          create: (context) {
+            final weatherRepository = GetIt.instance<WeatherRepository>();
+            return WeatherBloc(getWeather: GetWeather(weatherRepository))
+              ..add(FetchWeather(
+                  lat: 51.51494225418024, lon: -0.12363193061883422));
+          },
           child: Builder(
             builder: (context) {
               return BlocBuilder<WeatherBloc, WeatherState>(
@@ -87,7 +89,11 @@ class _WeatherPageState extends State<WeatherPage> {
         ),
       );
     } else if (state is WeatherError) {
-      return const Center(child: Text('Failed to fetch weather'));
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(SnackBar(content: Text(state.message)));
+      });
     }
     return Container();
   }
@@ -105,14 +111,15 @@ class _WeatherPageState extends State<WeatherPage> {
     return Container(
       margin: EdgeInsets.symmetric(vertical: height / 40),
       decoration: BoxDecoration(
-        color: const Color(0xFFF6F6F6),
+        color: const Color.fromARGB(255, 225, 224, 224),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Center(
-        child: Image.asset(
-          AppAssets.image_one,
+        child: Image.network(
+          "${Constants.weatherIconbaseUrl}$icon.png",
           height: adjustedHeight,
-          width: width / 2,
+          filterQuality: FilterQuality.high,
+          width: width / 2.5,
           fit: BoxFit.contain,
         ),
       ),

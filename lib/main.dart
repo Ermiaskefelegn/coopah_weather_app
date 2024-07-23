@@ -1,30 +1,29 @@
-import 'package:coopah_weather_app/data/data_sources/weather_remote_data_source.dart';
-import 'package:coopah_weather_app/data/repositories/weather_repository_impl.dart';
+import 'package:coopah_weather_app/core/dependency_Injection.dart';
 
 import 'package:coopah_weather_app/presentation/pages/weather_page.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setupInjector();
+
   await dotenv.load(fileName: ".env"); // Load environment variables
 
-  final dio = Dio();
-  final remoteDataSource = WeatherRemoteDataSource(dio: dio);
-  final repository = WeatherRepositoryImpl(remoteDataSource: remoteDataSource);
-  runApp(MyApp(repository: repository));
+  runApp(const WeatherAppMain());
 }
 
-class MyApp extends StatelessWidget {
-  final WeatherRepositoryImpl repository;
-
-  const MyApp({super.key, required this.repository});
+class WeatherAppMain extends StatelessWidget {
+  const WeatherAppMain({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Weather App',
-      home: WeatherPage(repository: repository),
+      home: WeatherPage(),
     );
   }
 }

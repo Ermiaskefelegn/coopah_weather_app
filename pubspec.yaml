@@ -16,12 +16,15 @@ dependencies:
   equatable: ^2.0.5
   flutter_dotenv: ^5.1.0
   cupertino_icons: ^1.0.6
+  get_it: ^7.7.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^3.0.0
+  bloc_test: ^9.1.7
+  mocktail: ^1.0.4
 
 flutter:
   uses-material-design: true
