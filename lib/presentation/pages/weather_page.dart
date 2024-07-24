@@ -1,8 +1,9 @@
+import 'package:coopah_weather_app/core/constants.dart';
 import 'package:coopah_weather_app/domain/repositories/weather_repository.dart';
 import 'package:coopah_weather_app/domain/usecases/get_weather.dart';
 import 'package:coopah_weather_app/presentation/widgets/custome_normal_button.dart';
-import 'package:coopah_weather_app/presentation/widgets/lable_text.dart';
-import 'package:coopah_weather_app/core/constants.dart';
+import 'package:coopah_weather_app/presentation/widgets/weather_detail.dart';
+import 'package:coopah_weather_app/presentation/widgets/weather_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -20,18 +21,6 @@ class WeatherPage extends StatefulWidget {
 class _WeatherPageState extends State<WeatherPage> {
   bool isFahrenheit = true;
 
-  String formatTemperature(double tempInKelvin, bool isFahrenheit) {
-    if (isFahrenheit) {
-      // Convert Kelvin to Fahrenheit
-      double tempInFahrenheit = (tempInKelvin - 273.15) * 9 / 5 + 32;
-      return '${tempInFahrenheit.toStringAsFixed(1)} °F';
-    } else {
-      // Convert Kelvin to Celsius
-      double tempInCelsius = tempInKelvin - 273.15;
-      return '${tempInCelsius.toStringAsFixed(1)} °C';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -43,8 +32,7 @@ class _WeatherPageState extends State<WeatherPage> {
           create: (context) {
             final weatherRepository = GetIt.instance<WeatherRepository>();
             return WeatherBloc(getWeather: GetWeather(weatherRepository))
-              ..add(FetchWeather(
-                  lat: 51.51494225418024, lon: -0.12363193061883422));
+              ..add(FetchWeather(lat: Constants.lat, lon: Constants.lon));
           },
           child: Builder(
             builder: (context) {
@@ -76,8 +64,13 @@ class _WeatherPageState extends State<WeatherPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildWeatherIcon(state.weather.icon, height, width),
-                _buildWeatherInfo(state, height, width),
+                WeatherIcon(
+                    icon: state.weather.icon, height: height, width: width),
+                WeatherInfoWidget(
+                    state: state,
+                    height: height,
+                    width: width,
+                    isFahrenheit: isFahrenheit),
                 _buildUnitSwitch(),
               ],
             ),
@@ -93,86 +86,6 @@ class _WeatherPageState extends State<WeatherPage> {
       });
     }
     return Container();
-  }
-
-  Widget _buildWeatherIcon(String icon, double height, double width) {
-    double adjustedHeight;
-    if (width < 300) {
-      // For width under 300px, use a 4:3 aspect ratio
-      adjustedHeight = width * 3 / 4;
-    } else {
-      // For width 300px and above, use a 16:9 aspect ratio
-      adjustedHeight = width * 9 / 16;
-    }
-
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: height / 40),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 225, 224, 224),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Center(
-        child: Image.network(
-          "${Constants.weatherIconbaseUrl}$icon.png",
-          height: adjustedHeight,
-          filterQuality: FilterQuality.high,
-          width: width / 2.5,
-          fit: BoxFit.contain,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildWeatherInfo(WeatherLoaded state, double height, double width) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          margin: EdgeInsets.symmetric(vertical: height / 45),
-          width: width,
-          alignment: Alignment.center,
-          child: const Text(
-            'THIS IS MY WEATHER APP',
-            style: TextStyle(
-              fontFamily: "Futura Condensed PT",
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-        ),
-        SizedBox(
-          height: height / 8,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const LabeledText(
-                label: 'Temperature',
-                weight: FontWeight.w700,
-                fontsize: 17,
-              ),
-              LabeledText(
-                label:
-                    '${formatTemperature(state.weather.temp, isFahrenheit)} ${isFahrenheit ? 'Fahrenheit' : 'Degrees'}',
-                weight: FontWeight.normal,
-                fontsize: 16,
-              ),
-              const LabeledText(
-                label: 'Location',
-                weight: FontWeight.w700,
-                fontsize: 17,
-              ),
-              LabeledText(
-                label: state.weather.locationName,
-                weight: FontWeight.normal,
-                fontsize: 16,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
   }
 
   Widget _buildUnitSwitch() {
@@ -216,8 +129,8 @@ class _WeatherPageState extends State<WeatherPage> {
         onPressed: () {
           BlocProvider.of<WeatherBloc>(context).add(
             FetchWeather(
-              lat: 51.51494225418024,
-              lon: -0.12363193061883422,
+              lat: Constants.lat,
+              lon: Constants.lon,
             ),
           );
         },
