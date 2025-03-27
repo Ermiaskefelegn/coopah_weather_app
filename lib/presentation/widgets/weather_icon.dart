@@ -1,4 +1,4 @@
-import 'package:coopah_weather_app/core/constants.dart';
+import 'package:coopah_weather_app/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class WeatherIcon extends StatelessWidget {

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:coopah_weather_app/data/data_sources/weather_remote_data_source.dart';
 import 'package:coopah_weather_app/domain/repositories/weather_repository.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -20,7 +22,8 @@ Future<void> setupInjector() async {
       )));
 
   // Data Source
-  getIt.registerLazySingleton(() => WeatherRemoteDataSource(dio: getIt()));
+  getIt
+      .registerLazySingleton(() => WeatherRemoteDataSource(dioClient: getIt()));
 
   // Repository
   getIt.registerLazySingleton<WeatherRepository>(
