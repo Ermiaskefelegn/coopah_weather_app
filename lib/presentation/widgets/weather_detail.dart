@@ -2,6 +2,7 @@ import 'package:coopah_weather_app/presentation/bloc/weather_state.dart';
 import 'package:coopah_weather_app/presentation/widgets/lable_text.dart';
 import 'package:flutter/material.dart';
 
+// Widget to display weather information including temperature and location
 class WeatherInfoWidget extends StatelessWidget {
   final WeatherLoaded state;
   final double height;
@@ -16,6 +17,7 @@ class WeatherInfoWidget extends StatelessWidget {
     required this.isFahrenheit,
   });
 
+  // Helper method to format temperature based on the selected unit (Fahrenheit or Celsius)
   String formatTemperature(double tempInKelvin, bool isFahrenheit) {
     if (isFahrenheit) {
       // Convert Kelvin to Fahrenheit
@@ -33,6 +35,7 @@ class WeatherInfoWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Header text for the weather app
         Container(
           margin: EdgeInsets.symmetric(vertical: height / 45),
           width: width,
@@ -53,6 +56,7 @@ class WeatherInfoWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              // Display temperature label and value
               const LabeledText(
                 label: 'Temperature',
                 weight: FontWeight.w700,
@@ -64,6 +68,7 @@ class WeatherInfoWidget extends StatelessWidget {
                 weight: FontWeight.normal,
                 fontsize: 16,
               ),
+              // Display location label and value
               const LabeledText(
                 label: 'Location',
                 weight: FontWeight.w700,

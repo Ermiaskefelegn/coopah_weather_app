@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+// A stateless widget that displays a labeled text with customizable font weight and size.
 class LabeledText extends StatelessWidget {
-  final String label;
-  final FontWeight weight;
-  final double fontsize;
+  final String label; // The text to display.
+  final FontWeight weight; // The font weight of the text.
+  final double fontsize; // The font size of the text.
 
   const LabeledText({
     super.key,
@@ -17,10 +18,10 @@ class LabeledText extends StatelessWidget {
     return Text(
       label,
       style: TextStyle(
-        fontFamily: "Circular Std",
+        fontFamily: "Circular Std", // Custom font family.
         fontWeight: weight,
         fontSize: fontsize,
-        fontStyle: FontStyle.normal,
+        fontStyle: FontStyle.normal, // Normal font style.
       ),
     );
   }

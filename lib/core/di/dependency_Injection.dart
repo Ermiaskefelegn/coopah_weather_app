@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:coopah_weather_app/core/network/dio/dio_client.dart';
 import 'package:coopah_weather_app/data/data_sources/weather_remote_data_source.dart';
 import 'package:coopah_weather_app/domain/repositories/weather_repository.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -20,6 +21,8 @@ Future<void> setupInjector() async {
   getIt.registerLazySingleton(() => Dio(BaseOptions(
         connectTimeout: const Duration(seconds: 5),
       )));
+
+  getIt.registerLazySingleton(() => DioClient());
 
   // Data Source
   getIt

@@ -13,7 +13,6 @@ void main() async {
 
   // Sets up dependency injection for the app
   await setupInjector();
-  await dotenv.load();
 
   final sentryDsn = dotenv.env[Constants.sentryDsn];
 
